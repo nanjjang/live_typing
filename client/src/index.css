@@ -1,0 +1,46 @@
+/* 초기화(reset) CSS — 브라우저마다 다른 기본 스타일을 맞춘다.
+   디자인 공통 스타일은 styles/base.css, 디자인 토큰은 styles/tokens.css 에 있다. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+:where(ul, ol)[role='list'] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
