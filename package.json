@@ -1,0 +1,10 @@
+{
+  "name": "livetype",
+  "private": true,
+  "scripts": {
+    "setup": "npm ci --prefix server && npm ci --prefix client",
+    "build": "npm run build --prefix client",
+    "prestart": "npm run build",
+    "start": "node server/index.js"
+  }
+}

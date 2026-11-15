@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',   // /api로 시작하는 요청을 백엔드(Express) 서버로 대리 전송
+        target: 'http://localhost:3000',   // /api로 시작하는 요청을 백엔드(Express) 서버로 대리 전송
         changeOrigin: true,                // 출처 불일치(CORS) 오류 해결
       },
     },

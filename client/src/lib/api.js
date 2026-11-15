@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// 모든 백엔드 요청은 /api 로 보낸다 (개발: Vite 프록시, 배포: nginx 프록시가 Express로 전달)
+// 화면과 같은 주소의 /api 를 사용한다. Vite 개발 서버에서는 Express로 프록시한다.
 const api = axios.create({ baseURL: '/api' })
 
 export function getToken() {

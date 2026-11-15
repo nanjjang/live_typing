@@ -7,28 +7,34 @@
 - `db/init/01-schema.sql` — `users`(회원), `records`(연습 기록) 테이블
 - `db/init/02-snippets.sql` — `snippets`(커뮤니티 레슨, 핵심 데이터) 테이블
 
-## 로컬 개발
+## 로컬 실행
+
+Node.js 22.12 이상과 로컬 MySQL이 필요합니다. Express가 React 화면과 API를 같은 주소에서 제공합니다.
+
+1. MySQL 실행 (Homebrew 기준): `brew services start mysql`
+2. DB와 계정을 만들고 SQL 파일 두 개를 순서대로 실행
 
 ```bash
-docker compose up -d db                 # MySQL만 컨테이너로 (호스트 3307 포트)
-cp server/.env.example server/.env      # DB_PORT=3307 로 바꾸기 (로컬 MySQL이면 3306 그대로)
-cd server && npm install && npm run dev # http://localhost:5000
-cd client && npm install && npm run dev # http://localhost:5173  (/api 는 5000으로 프록시)
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS livetype_학번 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  CREATE USER IF NOT EXISTS '학번'@'localhost' IDENTIFIED BY '비밀번호';
+  GRANT ALL PRIVILEGES ON livetype_학번.* TO '학번'@'localhost';"
+mysql -h 127.0.0.1 -P 3306 -u 학번 -p livetype_학번 < db/init/01-schema.sql
+mysql -h 127.0.0.1 -P 3306 -u 학번 -p livetype_학번 < db/init/02-snippets.sql
 ```
 
-로컬 MySQL을 쓸 때는 DB(`livetype_학번`)를 만들고 SQL 파일 두 개를 순서대로 실행하세요.
+3. `server/.env`가 없으면 `server/.env.example`을 복사합니다. 만든 DB에 맞게 `DB_USER`, `DB_PASSWORD`, `DB_NAME`을 채우고 `JWT_SECRET`을 설정합니다.
+4. 프로젝트 루트에서 실행합니다.
 
 ```bash
-mysql -u 학번 -p livetype_학번 < db/init/01-schema.sql
-mysql -u 학번 -p livetype_학번 < db/init/02-snippets.sql
+npm run setup  # 최초 설치 또는 의존성이 바뀌었을 때
+npm start      # React 빌드 후 Express 시작
 ```
 
-## Docker로 전체 실행
+[http://localhost:3000](http://localhost:3000)에서 접속합니다. 포트는 `server/.env`의 `PORT`로 지정할 수 있습니다.
 
-```bash
-cp .env.example .env
-docker compose up -d --build            # http://localhost:8080
-```
+### 화면 개발
+
+실시간 새로고침이 필요하면 별도 터미널에서 `npm run dev --prefix server`와 `npm run dev --prefix client`를 각각 실행합니다. [http://localhost:5173](http://localhost:5173)의 `/api` 요청은 Vite가 3000번 포트의 Express로 전달합니다.
 
 ## API
 

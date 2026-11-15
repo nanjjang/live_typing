@@ -1,8 +1,9 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'node:url';
 
 // .env 파일의 환경 변수 로드
-dotenv.config();
+dotenv.config({ path: fileURLToPath(new URL('./.env', import.meta.url)) });
 
 // MySQL 데이터베이스 커넥션 풀 생성
 const pool = mysql.createPool({
